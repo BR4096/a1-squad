@@ -1,0 +1,43 @@
+# Secrets
+.env
+.env.*
+!.env.example
+gemini-key.txt
+*.pem
+*.key
+credentials.json
+
+# Outputs
+outputs/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+*.egg-info/
+dist/
+build/
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Session state (local only)
+.session-state.json
+.session-log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# Claude Code local settings
+.claude/settings.local.json
+
+# Logs
+*.log
+logs/

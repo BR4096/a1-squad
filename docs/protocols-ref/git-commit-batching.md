@@ -1,0 +1,1 @@
+/Users/billringle/webdev/github/Best-Practices/protocols/tier-1/git-commit-batching.md
