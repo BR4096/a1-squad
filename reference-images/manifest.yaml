@@ -1,0 +1,47 @@
+# reference-images/manifest.yaml
+#
+# Catalog of all reference images for the Banana Squad pipeline.
+# Update this file whenever images are added or removed.
+#
+# See GUIDELINES.md for naming conventions, format rules, and category minimums.
+#
+# Schema per entry:
+#   file:        filename (must match file on disk)
+#   description: one-line description of what the image shows
+#   use_case:    list of contexts [marketing, social, mockup, ecommerce, diagram, editorial, all]
+#   tags:        freeform list for searchability
+
+style: []
+  # Example:
+  # - file: watercolor-warm-01.png
+  #   description: "Warm watercolor wash with soft edges, earthy tones"
+  #   use_case: [marketing, editorial]
+  #   tags: [warm, organic, soft]
+
+composition: []
+  # Example:
+  # - file: rule-of-thirds-01.jpg
+  #   description: "Subject at left-third intersection, negative space right"
+  #   use_case: [social, banner]
+  #   tags: [asymmetric, editorial]
+
+subject: []
+  # Example:
+  # - file: product-bottle-01.jpg
+  #   description: "Hero product shot, white background, soft shadow"
+  #   use_case: [mockup, ecommerce]
+  #   tags: [product, clean, studio]
+
+brand: []
+  # Example:
+  # - file: logo-primary-01.png
+  #   description: "Primary logo, full color, transparent background"
+  #   use_case: [all]
+  #   tags: [logo, identity]
+
+output-examples: []
+  # Example:
+  # - file: social-post-goal-01.png
+  #   description: "Target quality for social media posts, vibrant, on-brand"
+  #   use_case: [marketing]
+  #   tags: [goal, social, reference]
