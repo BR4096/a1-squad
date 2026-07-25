@@ -10,11 +10,11 @@ Essential guidance for Claude Code working on Banana Squad.
 
 ## Session Start
 
-```bash
-./scripts/session-startup.sh
-```
+**Every new session**: Run `/startup` to initialize context and verify the environment.
 
-**Manual**: Check `<env>` for today's date, read `PROJECT-STATE.md` for current status.
+This runs `scripts/session-startup.sh` (environment checks, git state, reference image counts) and then reviews PROJECT-STATE.md, DEVLOG.md, and BACKLOG.md to recommend session priorities.
+
+If the user hasn't run `/startup` and starts asking about project state or begins work, proactively suggest: _"Want me to run `/startup` first to check the environment and review project state?"_
 
 ## Breaking Changes (MANDATORY)
 

@@ -2,27 +2,26 @@
 description: Initialize session with context review and environment check
 ---
 
-Run the session startup to:
+Run the session startup script, then review key project state.
 
-1. Read PROJECT-STATE.md for current project health
-2. Read DEVLOG.md WIP section for incomplete tasks
-3. Check git status for uncommitted changes or stashed work
-4. Verify Python venv and dependencies are intact
-5. Verify Gemini API key is configured in .env
-6. Generate a prioritized task list from BACKLOG.md
+## Step 1: Run environment checks
 
-Execute:
 ```bash
-# Verify environment
-source .venv/bin/activate
-python3 -c "from google import genai; print('google-genai OK')"
-python3 -c "from PIL import Image; print('Pillow OK')"
-python3 -c "from dotenv import load_dotenv; load_dotenv(); import os; print('API key:', 'SET' if os.getenv('GEMINI_API_KEY') else 'MISSING')"
-
-# Git state
-git status --short
-git stash list
-git log --oneline -5
+./scripts/session-startup.sh
 ```
 
-Report the results and recommend next steps based on BACKLOG.md priorities.
+## Step 2: Read project state
+
+Read these files and summarize their status:
+
+1. **PROJECT-STATE.md** -- current sprint, known issues, next actions
+2. **DEVLOG.md** -- WIP section for incomplete tasks
+3. **BACKLOG.md** -- prioritized backlog
+
+## Step 3: Report and recommend
+
+Provide a concise session briefing:
+- Environment health (pass/fail from the script output)
+- Uncommitted changes or stashed work (if any)
+- Reference image library status (how many of 20 minimum)
+- Top 3 recommended actions for this session based on BACKLOG.md priorities and WIP items

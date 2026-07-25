@@ -1,5 +1,6 @@
 #!/bin/bash
 # Session startup for Banana Squad (Python project)
+# Run via: /startup (slash command) or ./scripts/session-startup.sh
 set -e
 
 PROJECT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
@@ -15,14 +16,6 @@ echo ""
 # Phase 1: Context Recovery
 echo "--- Phase 1: Context Recovery ---"
 
-LAST_SESSION=$(ls -t docs/session-notes/*.md 2>/dev/null | head -1)
-if [ -n "$LAST_SESSION" ]; then
-  echo "Last session: $(basename "$LAST_SESSION")"
-else
-  echo "No previous session notes found"
-fi
-
-echo ""
 echo "Git Status:"
 git status --short 2>/dev/null || echo "  (not a git repo)"
 
@@ -45,9 +38,9 @@ if [ -d ".venv" ]; then
   echo "Venv: .venv/ exists"
 
   # Check key deps
-  .venv/bin/python3 -c "import google.genai; print('google-genai: OK')" 2>/dev/null || echo "google-genai: MISSING"
-  .venv/bin/python3 -c "from PIL import Image; print('Pillow: OK')" 2>/dev/null || echo "Pillow: MISSING"
-  .venv/bin/python3 -c "import dotenv; print('python-dotenv: OK')" 2>/dev/null || echo "python-dotenv: MISSING"
+  .venv/bin/python3 -c "import google.genai; print('  google-genai: OK')" 2>/dev/null || echo "  google-genai: MISSING"
+  .venv/bin/python3 -c "from PIL import Image; print('  Pillow: OK')" 2>/dev/null || echo "  Pillow: MISSING"
+  .venv/bin/python3 -c "import dotenv; print('  python-dotenv: OK')" 2>/dev/null || echo "  python-dotenv: MISSING"
 else
   echo "WARNING: No .venv/ found. Run: python3 -m venv .venv && .venv/bin/pip install google-genai Pillow python-dotenv"
 fi
@@ -76,7 +69,22 @@ for doc in CLAUDE.md DEVLOG.md CHANGELOG.md PROJECT-STATE.md AGENTS.md BACKLOG.m
   fi
 done
 
-# Phase 4: Ready
+# Phase 4: Reference Images
+echo ""
+echo "--- Phase 4: Reference Images ---"
+
+TOTAL_REFS=0
+for category in style composition subject brand output-examples; do
+  COUNT=$(find "reference-images/$category" -type f \( -name '*.png' -o -name '*.jpg' -o -name '*.jpeg' -o -name '*.webp' \) 2>/dev/null | wc -l | tr -d ' ')
+  TOTAL_REFS=$((TOTAL_REFS + COUNT))
+  echo "  $category/: $COUNT images"
+done
+echo "  Total: $TOTAL_REFS / 20 minimum"
+if [ "$TOTAL_REFS" -lt 20 ]; then
+  echo "  NOTE: Below 20-image minimum. See reference-images/GUIDELINES.md"
+fi
+
+# Phase 5: Ready
 echo ""
 echo "========================================"
 echo "Session initialized!"
