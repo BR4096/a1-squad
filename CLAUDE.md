@@ -33,11 +33,11 @@ If the user hasn't run `/startup` and starts asking about project state or begin
 ```bash
 .venv/bin/python3 generate.py           # Test API connectivity
 .venv/bin/pip install -r requirements.txt  # Install dependencies
-.venv/bin/python3 -m pytest              # Run tests
-.venv/bin/python3 -m pytest --cov        # Run tests with coverage
 ruff check .                             # Lint
 ruff format .                            # Format
 ```
+
+Pytest commands: see [Testing](#testing) below.
 
 ## Decision Trees
 
@@ -64,59 +64,16 @@ Import error       → Activate venv: source .venv/bin/activate
 
 ## Critical Patterns
 
-### API Call Pattern
-
-```python
-import os
-from google import genai
-from google.genai import types
-from PIL import Image
-from dotenv import load_dotenv
-
-load_dotenv()
-client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
-
-response = client.models.generate_content(
-    model="gemini-3-pro-image-preview",
-    contents=["Your narrative prompt here"],
-    config=types.GenerateContentConfig(
-        response_modalities=['TEXT', 'IMAGE'],
-        image_config=types.ImageConfig(
-            aspect_ratio="16:9",
-            image_size="2K",
-        ),
-    )
-)
-
-for part in response.parts:
-    if part.text is not None:
-        print(part.text)
-    elif part.inline_data is not None:
-        image = part.as_image()
-        image.save("outputs/my-image.png")
-```
-
-### Error Handling
-
-```python
-try:
-    response = client.models.generate_content(...)
-except Exception as e:
-    msg = str(e)
-    # Never log: api_key, credentials, tokens
-    print(f"Generation failed: {msg}")
-```
+Full API call pattern and error handling code: see `docs/eng/gemini-3-image-api-guide.md`.
 
 ## Architecture
 
 ### Tech Stack
 
-- **Language**: Python 3.14+
 - **Image Generation**: Gemini 3 Pro Image API (`gemini-3-pro-image-preview`)
-- **SDK**: `google-genai`, `Pillow`, `python-dotenv`
 - **Agent Framework**: Claude Code experimental agent teams
-- **Linting**: ruff
-- **Testing**: pytest
+
+(SDK/lint/test tooling: see `pyproject.toml`.)
 
 ### The PaperBanana Pipeline
 
@@ -172,31 +129,7 @@ Final Output (5 variants in outputs/)
 
 ## Prompting Strategies
 
-### Photorealistic
-```
-A photorealistic [shot type] of [subject], [action], set in [environment].
-Illuminated by [lighting], creating [mood]. Captured with [camera/lens],
-emphasizing [textures]. [Aspect ratio].
-```
-
-### Stylized / Icons / Stickers
-```
-A [style] of [subject], featuring [characteristics] and [color palette].
-[Line style], [shading style]. Background: [color/transparent].
-```
-
-### Text in Images
-```
-Create a [image type] with the text "[exact text]" in [font style].
-Design: [description], colors: [scheme].
-```
-
-### Product Mockups
-```
-A studio-lit product photograph of [product] on [surface].
-Lighting: [setup]. Camera: [angle] to showcase [feature].
-Sharp focus on [detail]. [Aspect ratio].
-```
+Photorealistic / stylized-icon / text-in-image / product-mockup prompt templates: see `docs/eng/gemini-3-image-api-guide.md`.
 
 ## Testing
 
@@ -218,13 +151,6 @@ ruff check . && ruff format --check .
 # Full validation (before push)
 ruff check . && ruff format --check . && .venv/bin/python3 -m pytest
 ```
-
-## File Organization
-
-- **Scripts**: snake_case (`generate.py`, `batch_generate.py`)
-- **Tests**: `tests/test_{module}.py`
-- **Imports**: Standard lib, then third-party, then local
-- **Config**: `.env` for secrets, `pyproject.toml` for project config
 
 ## Session Exit
 
